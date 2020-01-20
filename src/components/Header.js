@@ -1,7 +1,10 @@
 import React from "react";
-import {NavLink} from 'react-router-dom';
+import {withRouter, NavLink} from 'react-router-dom';
+import {FirebaseContext} from '../firebase';
 
 function Header() {
+  const {user, firebase} = React.useContext(FirebaseContext);
+
   return <div className="header">
     <div className="flex">
       <img src='./logo.png' alt="Hooks News Logo" className="logo" />
@@ -26,9 +29,18 @@ function Header() {
     </div>
 
     <div className="flex">
-    <NavLink to="/login" className="header-link">
+    {user ? (
+      <>
+        <div className="header-name">{user.displayName}</div>
+        <div className="divider">|</div>
+        <div className="header-button">
+          logout
+        </div>
+      </>
+    )     
+    :<NavLink to="/login" className="header-link">
         login
-      </NavLink>
+      </NavLink>}
     </div>
 
   </div>;
