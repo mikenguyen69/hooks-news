@@ -12,16 +12,23 @@ const INITIAL_STATE = {
 function Login(props) {
   async function authenticateUser() {
     const {name, email, password} = values
-    const response = login 
-     ? await firebase.login(email, password)
-     : await firebase.register(name, email, password)
 
-     console.log({response})
+    try {
+      login 
+      ? await firebase.login(email, password)
+      : await firebase.register(name, email, password)
+
+      setFirebaseError(null)
+    } catch(err) {
+      console.error('Authentication Error', err);
+      setFirebaseError(err.message);
+    }    
   }
 
   const {handleChange, handleSubmit, handleBlur, errors, isSumitting, values } = useFormValidation(INITIAL_STATE, validateLogin, authenticateUser);
   
   const [login, setLogin] = React.useState(true);
+  const [firebaseError, setFirebaseError] = React.useState(null);
 
   return (
     <div>
@@ -59,6 +66,7 @@ function Login(props) {
           autoComplete="off"
         />
         {errors.password && <p className="error-text">{errors.password}</p>}
+        {firebaseError && <p className="error-text">{firebaseError}</p>}
         <div className="flex mt3">
           <button type="submit" className="buttno pointer mr2" disabled={isSumitting} 
           style={{background: isSumitting ? "grey" : "orange"}}
