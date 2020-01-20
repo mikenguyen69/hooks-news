@@ -1,5 +1,5 @@
 import React from "react";
-import {withRouter, NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 function Header() {
   return <div className="header">
