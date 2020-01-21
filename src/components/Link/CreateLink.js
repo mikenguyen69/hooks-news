@@ -1,6 +1,7 @@
 import React from "react";
 import useFormValidation from '../Auth/useFormValidation';
 import validateCreateLink from '../Auth/validateCreateLink';
+import FirebaseContext from '../../firebase/context';
 
 const INITIAL_STATE = {
   description: "",
@@ -8,17 +9,39 @@ const INITIAL_STATE = {
 }
 
 function CreateLink(props) {
+  const {firebase, user} = React.useContext(FirebaseContext); 
   const {handleChange, handleSubmit, handleBlur, isSumitting, values, errors} = 
     useFormValidation(INITIAL_STATE, validateCreateLink, submitLink) 
   const [firebaseError, setFirebaseError] = React.useState(null);
 
   async function submitLink() {
-    const {description, url} = values;
-
+    
     try {
-      setFirebaseError(null);
-      console.log(values);
-      //props.history.push("/");
+      if (!user) {
+        props.history.push('/login');
+      }
+      else {
+        const {description, url} = values;
+
+        const newLink = {
+          url, 
+          description,
+          postedBy: {
+            id: user.uid,
+            name: user.displayName
+          },
+          votes: [],
+          comments: [],
+          created: Date.now()
+        }
+
+        console.log(firebase);
+        
+        firebase.db.collection('links').add(newLink);
+
+        props.history.push('/');
+        setFirebaseError(null);
+      }
     }
     catch(err) {
       console.error('Submit Link Error', err);
