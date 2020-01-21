@@ -11,6 +11,11 @@ const INITIAL_STATE = {
 }
 
 function Login(props) {
+  const {handleChange, handleSubmit, handleBlur, errors, isSumitting, values } = useFormValidation(INITIAL_STATE, validateLogin, authenticateUser);
+  
+  const [login, setLogin] = React.useState(true);
+  const [firebaseError, setFirebaseError] = React.useState(null);
+
   async function authenticateUser() {
     const {name, email, password} = values
 
@@ -29,11 +34,7 @@ function Login(props) {
     }    
   }
 
-  const {handleChange, handleSubmit, handleBlur, errors, isSumitting, values } = useFormValidation(INITIAL_STATE, validateLogin, authenticateUser);
   
-  const [login, setLogin] = React.useState(true);
-  const [firebaseError, setFirebaseError] = React.useState(null);
-
   return (
     <div>
       <h2 className="mv3">{login ? "Login" : "Create Account"}</h2>
