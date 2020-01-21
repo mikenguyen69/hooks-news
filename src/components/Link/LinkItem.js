@@ -27,8 +27,10 @@ function LinkItem({link, index, showCount, history}) {
             }
           }
 
-          const updatedVote = [...previousVotes, vote];
-          voteRef.update({ votes: updatedVote});
+          const updatedVotes = [...previousVotes, vote];
+          const voteCount = updatedVotes.length;
+
+          voteRef.update({ votes: updatedVotes, voteCount: voteCount});
         }
       })
       
@@ -54,10 +56,10 @@ function LinkItem({link, index, showCount, history}) {
     </div>
     <div className="ml1">
       <div>
-        {link.description} <span className="link">{getDomain(link.url)}</span>
+        <a href={link.url} className="black no-underline">{link.description}</a> {" "}<span className="link">{getDomain(link.url)}</span>
       </div>      
       <div className="f6 lh-copy gray">        
-        {link.votes.length} votes by {link.postedBy.name} {distanceInWordsToNow(link.created)}
+        {link.voteCount} votes by {link.postedBy.name} {distanceInWordsToNow(link.created)}
         {" | "}
         <Link to={`/link/${link.id}`}>
           {link.comments.length > 0 ? `${link.comments.length} comments` : "discuss"}
