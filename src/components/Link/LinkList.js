@@ -7,12 +7,13 @@ import axios from 'axios';
 function LinkList(props) {
   const {firebase} = React.useContext(FirebaseContext);
   const [links, setLinks] = React.useState([]);
-  const [cursor, setCursor] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [totalLinks, setTotalLinks] = React.useState(0);
   const isTopPage = props.location.pathname.includes('top');
   const isNewPage = props.location.pathname.includes('new');
-  const page = Number(props.match.params.page);
-  
+  const page = Number(props.match.params.page);  
+  const linksRef = firebase.db.collection("links");
+
   React.useEffect(() => {
     const unsubscribe = getLinks();
     return () => unsubscribe();
@@ -20,51 +21,38 @@ function LinkList(props) {
 
   function getLinks() {    
     setLoading(true);  
-    const hasCursor = Boolean(cursor);  
-    const orderBy = { name: "created", direction: "desc"};
-    
+   
     if (isTopPage) {
-      orderBy.name = "voteCount";
-    }
-
-    console.log(`at page = ${page} and has cursor of ${cursor?.url}`);
-
-    var linkList = firebase.db.collection("links").orderBy(orderBy.name, orderBy.direction);
-    
-    if (page === 1) {
-      return linkList
-      .limit(LINKS_PER_PAGE)
-      .onSnapshot(handleSnapshot);      
-    } else if (hasCursor) {
-      return linkList
-      .startAfter(cursor.created)
-      .limit(LINKS_PER_PAGE)
-      .onSnapshot(handleSnapshot);      
+      return linksRef
+        .orderBy("voteCount", "desc")
+        .onSnapshot(handleSnapshot);
     } 
-    else {
+    else {      
+      // get total collection count;
+      linksRef.orderBy("created", "desc").get().then(snapshot => {
+        setTotalLinks(snapshot.size);
+      });
+
       const offset = page * LINKS_PER_PAGE - LINKS_PER_PAGE;
       axios.get(`https://us-central1-hooks-news-e53b4.cloudfunctions.net/linksPagination?offset=${offset}`)
         .then(response => {
-          const links = response.data;
-          const lastLink = links[links.length - 1];
-          setLinks(links);
-          setCursor(lastLink);
+          const links = response.data;        
+          setLinks(links);    
+          setLoading(false);      
         });         
-        setLoading(false);
-        return () => {};
+      
+      
+      return () => {};
     }
-
-    
   }
 
   function handleSnapshot(snapshot) {
     const links = snapshot.docs.map(doc => {
+      console.log(doc.data().url);
       return {id: doc.id, ...doc.data()}
     });
-
-    const lastLink = links[links.length - 1];
-    setLinks(links);
-    setCursor(lastLink);    
+    
+    setLinks(links);   
     setLoading(false);
   }
 
@@ -75,12 +63,13 @@ function LinkList(props) {
   }
 
   function visitNextPage() {
-    if (page <= links.length / LINKS_PER_PAGE) {
+    if (showNextPage) {
       props.history.push(`/new/${page + 1}`)
     }
   }
 
-  const pageIndex = page ? (page - 1)*LINKS_PER_PAGE + 1 : 0;
+  const pageIndex = page ? (page - 1)*LINKS_PER_PAGE + 1 : 1;
+  const showNextPage = page < totalLinks / LINKS_PER_PAGE;
 
   return (
   <div style={{opacity: loading ? 0.25 : 1}}>
@@ -90,7 +79,9 @@ function LinkList(props) {
       {isNewPage && (
         <div className="pagination">
           <div className="pointer mr2" onClick={visitPreviousPage}>Previous</div>
+          {showNextPage && (
           <div className="pointer" onClick={visitNextPage}>Next</div>
+          )}
         </div>
       )}
   </div>);
