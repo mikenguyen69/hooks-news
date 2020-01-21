@@ -2,6 +2,7 @@ import React from "react";
 import useFormValidation from './useFormValidation';
 import validateLogin from './validateLogin';
 import firebase from '../../firebase';
+import {Link} from 'react-router-dom';
 
 const INITIAL_STATE = {
   name: "",
@@ -21,7 +22,7 @@ function Login(props) {
       setFirebaseError(null)
 
       props.history.push("/");
-      
+
     } catch(err) {
       console.error('Authentication Error', err);
       setFirebaseError(err.message);
@@ -80,8 +81,10 @@ function Login(props) {
             {login? "need to create an account?" : "already have an account?"}
           </button>
         </div>
-
       </form>
+      <div className="forgot-password">
+        <Link to="/forgot">forgot password?</Link>
+      </div>
     </div>
   );
 }
