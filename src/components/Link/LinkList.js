@@ -19,7 +19,7 @@ function LinkList(props) {
       return {id: doc.id, ...doc.data()}
     });
 
-    console.log({links});
+    //console.log({links});
     setLinks(links);
   }
 
