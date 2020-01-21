@@ -36,7 +36,7 @@ function CreateLink(props) {
         }
 
         console.log(firebase);
-        
+
         firebase.db.collection('links').add(newLink);
 
         props.history.push('/');
