@@ -33,5 +33,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/mikenguyen69/hooks-news.git",
+  "author": "Mike Nguyen <nguyenduchung0609@gmail.com>",
+  "license": "MIT"
 }
