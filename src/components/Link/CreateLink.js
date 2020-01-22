@@ -1,7 +1,7 @@
 import React from "react";
-import useFormValidation from '../Auth/useFormValidation';
-import validateCreateLink from '../Auth/validateCreateLink';
-import FirebaseContext from '../../firebase/context';
+import useFormValidation from "../Auth/useFormValidation";
+import validateCreateLink from "../Auth/validateCreateLink";
+import FirebaseContext from "../../firebase/context";
 
 const INITIAL_STATE = {
   description: "",
@@ -18,7 +18,7 @@ function CreateLink(props) {
     
     try {
       if (!user) {
-        props.history.push('/login');
+        props.history.push("/login");
       }
       else {
         const {description, url} = values;
@@ -38,14 +38,14 @@ function CreateLink(props) {
 
         console.log(firebase);
 
-        firebase.db.collection('links').add(newLink);
+        firebase.db.collection("links").add(newLink);
 
-        props.history.push('/');
+        props.history.push("/");
         setFirebaseError(null);
       }
     }
     catch(err) {
-      console.error('Submit Link Error', err);
+      console.error("Submit Link Error", err);
       setFirebaseError(err.message);
     }
   }
@@ -57,7 +57,7 @@ function CreateLink(props) {
         placeholder="A description for your link" 
         autoComplete="off" 
         type="text" 
-        className = {errors.description && 'error-input'}
+        className = {errors.description && "error-input"}
         value={values.description}
         onChange={handleChange} 
         onBlur={handleBlur}  />
@@ -67,7 +67,7 @@ function CreateLink(props) {
         placeholder="A URL for your link" 
         autoComplete="off" 
         type="text" 
-        className = {errors.url && 'error-input'}
+        className = {errors.url && "error-input"}
         value={values.url}
         onChange={handleChange} 
         onBlur={handleBlur} />      

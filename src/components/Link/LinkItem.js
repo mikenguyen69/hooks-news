@@ -1,18 +1,18 @@
 import React from "react";
-import {Link, withRouter} from 'react-router-dom';
-import {getDomain} from '../../utils'
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
-import FirebaseContext from '../../firebase/context';
+import {Link, withRouter} from "react-router-dom";
+import {getDomain} from "../../utils"
+import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import FirebaseContext from "../../firebase/context";
 
 function LinkItem({link, index, showCount, history}) {
   const {firebase, user} = React.useContext(FirebaseContext);
 
   function handleVote() {
     if (!user) {
-      history.push('/login');
+      history.push("/login");
     }
     else {
-      const voteRef = firebase.db.collection('links').doc(link.id);
+      const voteRef = firebase.db.collection("links").doc(link.id);
       voteRef.get().then(doc => {
         if (doc.exists) {
           const previousVotes = doc.data().votes;
@@ -38,7 +38,7 @@ function LinkItem({link, index, showCount, history}) {
   }
 
   function handleDeleteLink() {
-    const linkRef =  firebase.db.collection('links').doc(link.id);
+    const linkRef =  firebase.db.collection("links").doc(link.id);
     linkRef.delete().then(() => {
       console.log(`Document with ID ${link.id} deleted`);
     }).catch(err => {

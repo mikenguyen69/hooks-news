@@ -1,7 +1,7 @@
-const functions = require('firebase-functions');
+const functions = require("firebase-functions");
 const LINKS_PER_PAGE = 5;
 
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 admin.initializeApp({
     credential: admin.credential.applicationDefault(),
     databaseURL: "https://hooks-news-e53b4.firebaseio.com"
@@ -12,11 +12,11 @@ const db = admin.firestore()
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 exports.linksPagination = functions.https.onRequest((request, response) => {
-    response.set('Access-Control-Allow-Origin', "*")
-    let linksRef = db.collection('links')
+    response.set("Access-Control-Allow-Origin", "*")
+    let linksRef = db.collection("links")
     const offset = Number(request.query.offset)
     linksRef
-        .orderBy('created', 'desc')
+        .orderBy("created", "desc")
         .limit(LINKS_PER_PAGE)
         .offset(offset)
         .get()

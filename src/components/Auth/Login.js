@@ -1,8 +1,8 @@
 import React from "react";
-import useFormValidation from './useFormValidation';
-import validateLogin from './validateLogin';
-import firebase from '../../firebase';
-import {Link} from 'react-router-dom';
+import useFormValidation from "./useFormValidation";
+import validateLogin from "./validateLogin";
+import firebase from "../../firebase";
+import {Link} from "react-router-dom";
 
 const INITIAL_STATE = {
   name: "",
@@ -29,7 +29,7 @@ function Login(props) {
       props.history.push("/");
 
     } catch(err) {
-      console.error('Authentication Error', err);
+      console.error("Authentication Error", err);
       setFirebaseError(err.message);
     }    
   }
@@ -55,7 +55,7 @@ function Login(props) {
           value={values.email}
           onBlur = {handleBlur}
           onChange={handleChange} 
-          className = {errors.email && 'error-input'}
+          className = {errors.email && "error-input"}
           placeholder="Your email" 
           autoComplete="off"
         />
@@ -66,7 +66,7 @@ function Login(props) {
           value={values.password}
           onBlur = {handleBlur}
           onChange={handleChange} 
-          className = {errors.password && 'error-input'}
+          className = {errors.password && "error-input"}
           placeholder="Chose a secure password" 
           autoComplete="off"
         />

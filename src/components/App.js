@@ -1,14 +1,14 @@
 import React from "react";
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import CreateLink from './Link/CreateLink';
-import SearchLinks from './Link/SearchLinks';
-import LinkList from './Link/LinkList';
-import LinkDetail from './Link/LinkDetail';
-import Login from './Auth/Login';
-import ForgotPassword from './Auth/ForgotPassword';
-import Header from './Header';
-import firebase, {FirebaseContext} from '../firebase';
-import useAuth from './Auth/useAuth';
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
+import CreateLink from "./Link/CreateLink";
+import SearchLinks from "./Link/SearchLinks";
+import LinkList from "./Link/LinkList";
+import LinkDetail from "./Link/LinkDetail";
+import Login from "./Auth/Login";
+import ForgotPassword from "./Auth/ForgotPassword";
+import Header from "./Header";
+import firebase, {FirebaseContext} from "../firebase";
+import useAuth from "./Auth/useAuth";
 
 function App() {
   const user = useAuth();

@@ -1,16 +1,16 @@
 import React from "react";
-import FirebaseContext from '../../firebase/context';
-import LinkItem from './LinkItem';
-import {LINKS_PER_PAGE} from '../../utils';
-import axios from 'axios';
+import FirebaseContext from "../../firebase/context";
+import LinkItem from "./LinkItem";
+import {LINKS_PER_PAGE} from "../../utils";
+import axios from "axios";
 
 function LinkList(props) {
   const {firebase} = React.useContext(FirebaseContext);
   const [links, setLinks] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [totalLinks, setTotalLinks] = React.useState(0);
-  const isTopPage = props.location.pathname.includes('top');
-  const isNewPage = props.location.pathname.includes('new');
+  const isTopPage = props.location.pathname.includes("top");
+  const isNewPage = props.location.pathname.includes("new");
   const page = Number(props.match.params.page);  
   const linksRef = firebase.db.collection("links");
 

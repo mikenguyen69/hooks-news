@@ -13,9 +13,9 @@ export default function validateCreateLink(values) {
     if (!values.url) {
         errors.url = "URL required";
     } 
-    else if (!/^(ftp|http|https):\/\/[^ '']+$/.test(values.url)) {
+    else if (!/^(ftp|http|https):\/\/[^ ""]+$/.test(values.url)) {
         errors.url = "URL must be valid";
     }
-    
+
     return errors;
 }

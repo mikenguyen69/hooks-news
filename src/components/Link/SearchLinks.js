@@ -1,6 +1,6 @@
 import React from "react";
-import firebaseContext from '../../firebase/context';
-import LinkItem from './LinkItem';
+import firebaseContext from "../../firebase/context";
+import LinkItem from "./LinkItem";
 
 function SearchLinks() {
   const {firebase} = React.useContext(firebaseContext);
@@ -13,7 +13,7 @@ function SearchLinks() {
   }, [])
 
   function getInitialLinks() {
-    firebase.db.collection('links').get().then(snapshot => {
+    firebase.db.collection("links").get().then(snapshot => {
       const links = snapshot.docs.map(doc => {
         return {id: doc.id, ...doc.data()}
       });
