@@ -70,6 +70,7 @@ function LinkList(props) {
 
   const pageIndex = page ? (page - 1)*LINKS_PER_PAGE + 1 : 1;
   const showNextPage = page < totalLinks / LINKS_PER_PAGE;
+  const showPrevPage = page > 1;
 
   return (
   <div style={{opacity: loading ? 0.25 : 1}}>
@@ -78,7 +79,9 @@ function LinkList(props) {
       ))}
       {isNewPage && (
         <div className="pagination">
+          {showPrevPage && (
           <div className="pointer mr2" onClick={visitPreviousPage}>Previous</div>
+          )}          
           {showNextPage && (
           <div className="pointer" onClick={visitNextPage}>Next</div>
           )}

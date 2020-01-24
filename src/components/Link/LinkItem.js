@@ -6,6 +6,7 @@ import FirebaseContext from "../../firebase/context";
 
 function LinkItem({link, index, showCount, history}) {
   const {firebase, user} = React.useContext(FirebaseContext);
+  const [voteCount, setVoteCount] = React.useState(link.voteCount);
 
   function handleVote() {
     if (!user) {
@@ -27,8 +28,8 @@ function LinkItem({link, index, showCount, history}) {
             }
           }
 
-          const updatedVotes = [...previousVotes, vote];
-          const voteCount = updatedVotes.length;
+          const updatedVotes = [...previousVotes, vote];         
+          setVoteCount(updatedVotes.length);
 
           voteRef.update({ votes: updatedVotes, voteCount: voteCount});
         }
@@ -41,6 +42,7 @@ function LinkItem({link, index, showCount, history}) {
     const linkRef =  firebase.db.collection("links").doc(link.id);
     linkRef.delete().then(() => {
       console.log(`Document with ID ${link.id} deleted`);
+      history.goBack();
     }).catch(err => {
       console.error("Error Deleting Link", err);
     });
@@ -59,7 +61,7 @@ function LinkItem({link, index, showCount, history}) {
         <a href={link.url} className="black no-underline">{link.description}</a> {" "}<span className="link">{getDomain(link.url)}</span>
       </div>      
       <div className="f6 lh-copy gray">        
-        {link.voteCount} votes by {link.postedBy.name} {distanceInWordsToNow(link.created)}
+        {voteCount} votes by {link.postedBy.name} {distanceInWordsToNow(link.created)}
         {" | "}
         <Link to={`/link/${link.id}`}>
           {link.comments.length > 0 ? `${link.comments.length} comments` : "discuss"}
