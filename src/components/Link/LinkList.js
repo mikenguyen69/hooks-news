@@ -17,7 +17,7 @@ function LinkList(props) {
   React.useEffect(() => {
     const unsubscribe = getLinks();
     return () => unsubscribe();
-  }, [isTopPage, page]);
+  }, [isTopPage, isNewPage, page]);
 
   function getLinks() {    
     setLoading(true);  
